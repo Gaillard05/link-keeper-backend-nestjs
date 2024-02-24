@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ConfigurationService } from './configuration/configuration.service';
 import { AppService } from './app.service';
 import { Contact } from './contact/model/Contact';
