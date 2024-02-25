@@ -14,7 +14,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    return this.appService.home();
   }
 
   @Get('environment')
@@ -22,7 +22,7 @@ export class AppController {
     return this.configService.getValue('environment');
   }
 
-  @Post('contacts')
+  @Post()
   async addContact(@Body() contactData: Contact): Promise<Contact> {
     const newContact = this.contactService.createContact(contactData);
     return newContact;
