@@ -41,9 +41,12 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
+# install orm
+npm install typeorm @nestjs/typeorm mysql
+
+# class validator
+npm install class-validator
+
 
 ## Test
 
