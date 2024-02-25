@@ -1,13 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { IsNotEmpty, IsPhoneNumber } from 'class-validator';
 
 @Entity()
 export class Contact {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('require')
+  @Column()
+  @IsNotEmpty()
   name: string;
 
-  @Column('require')
+  @Column()
+  @IsNotEmpty()
+  @IsPhoneNumber('FR', { message: 'Invalid telephone number' })
   telephone: string;
 }
