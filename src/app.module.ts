@@ -1,17 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ContactModule } from './contact/contact.module';
 import { ConfigurationModule } from './configuration/configuration.module';
+import { ContactModule } from './contact/contact.module';
+
+// Supposons que vous vouliez passer des options à ConfigurationModule.register
+const options = {}; // Définir des options selon vos besoins
 
 @Module({
-  imports: [
-    ContactModule,
-    ConfigurationModule.register({
-      databaseHost: 'localhost',
-      databasePort: 5432,
-      // Autres options de configuration de la base de données...
-    }),],
+  imports: [ConfigurationModule.register(options), ContactModule],
   controllers: [AppController],
   providers: [AppService],
 })
