@@ -106,15 +106,6 @@ export class RequestValidationMiddleware implements NestMiddleware {
           message: 'Un contact avec cet ID existe déjà',
         });
       }
-
-      // Vérifier si le nouvel ID est valide (nombre entier supérieur à 0)
-      if (typeof newId !== 'number' || newId <= 0) {
-        return res.status(HttpStatus.BAD_REQUEST).json({
-          error: 'Requête invalide',
-          message: 'L\'ID doit être un nombre entier supérieur à 0',
-        });
-      }
-
     
       // Vérifier si le numéro de téléphone à mettre à jour est déjà utilisé par un autre contact
       const { telephone } = req.body;
