@@ -97,15 +97,6 @@ export class RequestValidationMiddleware implements NestMiddleware {
           message: `Aucun contact avec l'ID ${id} trouvé`,
         });
       }
-
-      // Vérifier si le nouvel ID existe déjà dans le fichier JSON
-      const { newId } = req.body;
-      if (newId && contacts.some(contact => contact.id === newId && contact.id !== +id)) {
-        return res.status(HttpStatus.BAD_REQUEST).json({
-          error: 'Requête invalide',
-          message: 'Un contact avec cet ID existe déjà',
-        });
-      }
     
       // Vérifier si le numéro de téléphone à mettre à jour est déjà utilisé par un autre contact
       const { telephone } = req.body;
