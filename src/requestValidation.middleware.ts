@@ -108,6 +108,15 @@ export class RequestValidationMiddleware implements NestMiddleware {
         });
       }
 
+      // Vérifier le format du numéro de téléphone
+      const phoneNumberRegex = /^\d{2}\.\d{2}\.\d{2}\.\d{2}\.\d{2}$/; // Format xx.xx.xx.xx.xx
+      if (!phoneNumberRegex.test(telephone)) {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          error: 'Requête invalide',
+          message: 'Le numéro de téléphone doit être au format xx.xx.xx.xx.xx',
+        });
+      }
+
        // Vérifier si les données modifiées ne sont pas vides
       const { name } = req.body;
       if (name === "" || telephone === "") {
