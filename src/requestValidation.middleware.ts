@@ -34,8 +34,8 @@ export class RequestValidationMiddleware implements NestMiddleware {
       }
 
       // Vérifier si les données requises sont présentes dans le corps de la requête
-      const { name, telephone } = req.body;
-      if (!name || !telephone) {
+      const { name, phone } = req.body;
+      if (!name || !phone) {
         return res.status(HttpStatus.BAD_REQUEST).json({
           error: 'Requête invalide',
           message: 'Le nom et le numéro de téléphone sont requis',
@@ -43,7 +43,7 @@ export class RequestValidationMiddleware implements NestMiddleware {
       }
 
       // Vérifier si les champs requis ne sont pas vides
-      if (name.trim() === '' || telephone.trim() === '') {
+      if (name.trim() === '' || phone.trim() === '') {
         return res.status(HttpStatus.BAD_REQUEST).json({
           error: 'Requête invalide',
           message: 'Le nom et le numéro de téléphone ne peuvent pas être vides',
@@ -60,7 +60,7 @@ export class RequestValidationMiddleware implements NestMiddleware {
 
       // Vérifier le format du numéro de téléphone
       const phoneNumberRegex = /^\d{2}\.\d{2}\.\d{2}\.\d{2}\.\d{2}$/; // Format xx.xx.xx.xx.xx
-      if (!phoneNumberRegex.test(telephone)) {
+      if (!phoneNumberRegex.test(phone)) {
         return res.status(HttpStatus.BAD_REQUEST).json({
           error: 'Requête invalide',
           message: 'Le numéro de téléphone doit être au format xx.xx.xx.xx.xx',
@@ -68,7 +68,7 @@ export class RequestValidationMiddleware implements NestMiddleware {
       }
 
       // Vérifier si un contact avec le même numéro de téléphone existe déjà
-      const existingContact = contacts.find(contact => contact.telephone === telephone);
+      const existingContact = contacts.find(contact => contact.phone === phone);
       if (existingContact) {
         return res.status(HttpStatus.BAD_REQUEST).json({
           error: 'Requête invalide',
@@ -97,10 +97,26 @@ export class RequestValidationMiddleware implements NestMiddleware {
           message: `Aucun contact avec l'ID ${id} trouvé`,
         });
       }
-    
+
+       // Vérifier si les données modifiées ne sont pas vides
+      const { name } = req.body;
+      if (name === "") {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          error: 'Requête invalide',
+          message: 'Le nom ne peuvent pas être vides',
+        });
+      }
+  
+       // Vérifier si les données modifiées ne sont pas vides
+      const { phone } = req.body;
+      if (phone === "") {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          error: 'Requête invalide',
+          message: 'Le numero de telephone ne peuvent pas être vides',
+        });
+      }
       // Vérifier si le numéro de téléphone à mettre à jour est déjà utilisé par un autre contact
-      const { telephone } = req.body;
-      const existingContactWithSameTelephone = contacts.find(contact => contact.telephone === telephone && contact.id !== +id);
+      const existingContactWithSameTelephone = contacts.find(contact => contact.phone === phone && contact.id !== +id);
       if (existingContactWithSameTelephone) {
         return res.status(HttpStatus.BAD_REQUEST).json({
           error: 'Requête invalide',
@@ -110,19 +126,10 @@ export class RequestValidationMiddleware implements NestMiddleware {
 
       // Vérifier le format du numéro de téléphone
       const phoneNumberRegex = /^\d{2}\.\d{2}\.\d{2}\.\d{2}\.\d{2}$/; // Format xx.xx.xx.xx.xx
-      if (!phoneNumberRegex.test(telephone)) {
+      if (!phoneNumberRegex.test(phone)) {
         return res.status(HttpStatus.BAD_REQUEST).json({
           error: 'Requête invalide',
           message: 'Le numéro de téléphone doit être au format xx.xx.xx.xx.xx',
-        });
-      }
-
-       // Vérifier si les données modifiées ne sont pas vides
-      const { name } = req.body;
-      if (name === "" || telephone === "") {
-        return res.status(HttpStatus.BAD_REQUEST).json({
-          error: 'Requête invalide',
-          message: 'Le nom et le numéro de téléphone ne peuvent pas être vides',
         });
       }
 
