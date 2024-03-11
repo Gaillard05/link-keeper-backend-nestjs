@@ -56,11 +56,23 @@ export class AppController {
   }
 
   @Put('contact/:id')
-  async updateContact(@Param('id') id: number, @Body() contactData: Contact): Promise<Contact> {
+  async updateContact(@Param('id') id: number, @Body() updatedContactData: Contact): Promise<Contact> {
     this.loadContacts(); // Charger les contacts à partir du fichier JSON
-    const updatedContact = this.contactService.updateContact(+id, contactData);
-    this.saveContactsToFile(); // Enregistrer les contacts dans le fichier JSON
-    return updatedContact;
+
+    // Vérifier si le contact existe
+    const existingContact = this.contactService.getContactById(+id);
+    if (!existingContact) {
+      // Gérer le cas où le contact n'existe pas
+      // Ici vous pouvez choisir de retourner une erreur ou de créer un nouveau contact
+      // Pour cet exemple, nous allons jeter une exception, mais vous pouvez adapter ceci selon votre logique d'application
+      throw new Error(`Contact with id ${id} not found`);
+    }
+
+    // Mettre à jour les données du contact existant
+    const updatedContact = { ...existingContact, ...updatedContactData };
+    this.contactService.updateContact(+id, updatedContact); // Mettre à jour le contact dans le service
+
+    return updatedContact; // Retourner le contact mis à jour
   }
 
   @Delete('contact/:id')

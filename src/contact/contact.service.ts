@@ -20,7 +20,7 @@ export class ContactService {
     }
   }
 
-  private saveContacts(): void {
+  private saveContactsToFile(): void {
     fs.writeFileSync(this.filePath, JSON.stringify(this.contacts, null, 2));
   }
 
@@ -30,7 +30,7 @@ export class ContactService {
       ...contactData,
     };
     this.contacts.push(newContact);
-    this.saveContacts();
+    this.saveContactsToFile();
     return newContact;
   }
 
@@ -48,23 +48,23 @@ export class ContactService {
   }
 
   updateContact(id: number, updatedContact: Contact): Contact {
-    this.loadContacts();
+    this.loadContacts(); // Assurez-vous de charger les contacts avant de mettre à jour
     const index = this.contacts.findIndex(c => c.id === id);
     if (index === -1) {
-      throw new NotFoundException(`Contact with id ${id} not found`);
+        throw new NotFoundException(`Contact with id ${id} not found`);
     }
     this.contacts[index] = { ...this.contacts[index], ...updatedContact };
-    this.saveContacts();
+    this.saveContactsToFile();
     return this.contacts[index];
-  }
+}
+
   deleteContact(id: number): void {
-    this.loadContacts();
     const index = this.contacts.findIndex(c => c.id === id);
     if (index === -1) {
       throw new NotFoundException(`Contact with id ${id} not found`);
     }
     this.contacts.splice(index, 1);
-    this.saveContacts();
+    this.saveContactsToFile();
   }
 
   private generateNewId(): number {
