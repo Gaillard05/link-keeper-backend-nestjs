@@ -86,7 +86,6 @@ export class RequestValidationMiddleware implements NestMiddleware {
           message: 'Le corps de la requête est manquant',
         });
       }
-
       // Récupérer l'ID du contact à mettre à jour depuis les paramètres de la requête
       const { id } = req.params;
 
@@ -107,6 +106,15 @@ export class RequestValidationMiddleware implements NestMiddleware {
           message: 'Un contact avec cet ID existe déjà',
         });
       }
+
+      // Vérifier si le nouvel ID est valide (nombre entier supérieur à 0)
+      if (typeof newId !== 'number' || newId <= 0) {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          error: 'Requête invalide',
+          message: 'L\'ID doit être un nombre entier supérieur à 0',
+        });
+      }
+
     
       // Vérifier si le numéro de téléphone à mettre à jour est déjà utilisé par un autre contact
       const { telephone } = req.body;
@@ -117,6 +125,16 @@ export class RequestValidationMiddleware implements NestMiddleware {
           message: 'Un contact avec ce numéro de téléphone existe déjà',
         });
       }
+
+       // Vérifier si les données modifiées ne sont pas vides
+      const { name } = req.body;
+      if (!name || !telephone) {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          error: 'Requête invalide',
+          message: 'Le nom et le numéro de téléphone ne peuvent pas être vides',
+        });
+      }
+
     }
     // Si la méthode de la requête n'est pas POST ou si toutes les vérifications sont réussies, passer au middleware suivant
     next();
