@@ -123,16 +123,6 @@ export class RequestValidationMiddleware implements NestMiddleware {
           message: 'Un contact avec ce numéro de téléphone existe déjà',
         });
       }
-
-      // Vérifier le format du numéro de téléphone
-      const phoneNumberRegex = /^\d{2}\.\d{2}\.\d{2}\.\d{2}\.\d{2}$/; // Format xx.xx.xx.xx.xx
-      if (!phoneNumberRegex.test(phone)) {
-        return res.status(HttpStatus.BAD_REQUEST).json({
-          error: 'Requête invalide',
-          message: 'Le numéro de téléphone doit être au format xx.xx.xx.xx.xx',
-        });
-      }
-
     }
     // Si la méthode de la requête n'est pas POST ou si toutes les vérifications sont réussies, passer au middleware suivant
     next();
