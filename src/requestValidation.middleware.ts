@@ -119,7 +119,7 @@ export class RequestValidationMiddleware implements NestMiddleware {
 
        // Vérifier si les données modifiées ne sont pas vides
       const { name } = req.body;
-      if (!name || !telephone) {
+      if (name === "" || telephone === "") {
         return res.status(HttpStatus.BAD_REQUEST).json({
           error: 'Requête invalide',
           message: 'Le nom et le numéro de téléphone ne peuvent pas être vides',
